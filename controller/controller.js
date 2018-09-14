@@ -9,6 +9,13 @@ class Controller {
       View.register(objData, fetchData);
     })
   }
-}
+
+  static login(objLogin) {
+    Employee.login(objLogin, (status, objLogin) => {
+      View.login(status, objLogin)
+    })
+  }
+
+}// end class controller
 
 module.exports = Controller
