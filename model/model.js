@@ -1,19 +1,48 @@
 const fs = require('fs');
 
-// class Patient {
-//   constructor(id, name, diagnosis) {
-//     this.id = id
-//     this.name = name
-//     this.diagnosis = diagnosis
-//   }
-// }
+class Patient {
+  constructor(objPatient) {}
+
+  static add(objPatient, callback) {
+    Patient.checkDokter((status) => {
+      if (status === false) {
+        callback(false, objPatient);
+      } else {
+        fs.readFile('patient.json', 'utf8', (err, data) => {
+          if (err) {
+            console.log(err);
+          } else {
+            let fetchPatient = JSON.parse(data);
+            fetchPatient.push(objPatient);
+            let finalData = JSON.stringify(fetchPatient, null, 2);
+            fs.writeFile('patient.json', finalData, 'utf8', (err, data) => {});
+            callback(true, fetchPatient);
+          }
+        })
+      }
+    })
+  }
+
+  static checkDokter (callback) {
+    fs.readFile('login.json', 'utf8', (err, data) => {
+      if (err) {
+        console.log(err);
+      } else {
+        let fetchLogin = JSON.parse(data);
+          if (fetchLogin['role'] === 'dokter') {
+            callback(true);
+            return;
+          } else {
+            callback(false);
+          }
+      }
+    })
+  }
+
+} //end patient
 
 class Employee {
-  constructor(username, password, position) {
-    this.username = username;
-    this.password = password;
-    this.position = position;
-  }
+  constructor(objData) {}
 
   static register(objData, callback) {
     fs.readFile('employee.json', 'utf8', (err, data) => {
@@ -37,6 +66,7 @@ class Employee {
         let fetchData = JSON.parse(data);
         for (var i = 0; i < fetchData.length; i++) {
           if (objLogin['username'] === fetchData[i]['username'] && objLogin['password'] === fetchData[i]['password']) {
+            fs.writeFile('login.json', JSON.stringify(fetchData[i]), 'utf8', (err, data) => {});
             callback(true, objLogin);
             return;
           }
@@ -48,4 +78,4 @@ class Employee {
 
 } // end class employee
 
-module.exports =  Employee
+module.exports =  {Employee, Patient}

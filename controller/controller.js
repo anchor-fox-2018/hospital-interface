@@ -1,4 +1,4 @@
-const Employee = require('../model/model.js');
+const {Employee, Patient} = require('../model/model.js');
 const View = require('../view/view.js')
 
 class Controller {
@@ -12,7 +12,13 @@ class Controller {
 
   static login(objLogin) {
     Employee.login(objLogin, (status, objLogin) => {
-      View.login(status, objLogin)
+      View.login(status, objLogin);
+    })
+  }
+
+  static addPatient(objPatient) {
+    Patient.add(objPatient, (status, fetchPatient) => {
+      View.patient(status, fetchPatient);
     })
   }
 

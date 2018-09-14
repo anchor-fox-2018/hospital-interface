@@ -15,6 +15,13 @@ if (command === 'register') {
     password: process.argv[4]
   }
   Controller.login(objLogin);
-}else {
+} else if (command === 'addPatient') {
+  let objPatient = {
+    id: process.argv[3],
+    name: process.argv[4],
+    diagnosis: process.argv.splice(5)
+  }
+  Controller.addPatient(objPatient);
+} else {
   console.log('An error occured');
 }

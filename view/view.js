@@ -11,6 +11,14 @@ class View {
     }
   }
 
+  static patient(status, fetchPatient) {
+    if (status === true) {
+      console.log(`Data pasien berhasil ditambahkan. Total data pasien: ${fetchPatient.length}`);
+    } else if (status === false){
+      console.log(`Tidak memiliki akses untuk add pasien`);
+    }
+  }
+
 
 } // end class view
 
